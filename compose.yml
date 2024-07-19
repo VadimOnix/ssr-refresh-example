@@ -1,0 +1,50 @@
+name: refresh-example
+
+services:
+  nginx:
+    container_name: nginx-proxy
+    image: nginx:1.27
+    volumes:
+      - ./nginx/templates:/etc/nginx/templates
+      - ./nginx/certs:/etc/nginx/certs
+    ports:
+      - ${HTTP_PORT}:80
+      - ${HTTPS_PORT}:443
+    environment:
+      - NGINX_ENVSUBST_TEMPLATE_SUFFIX=.ngconf
+      - SERVER_NAME=${SERVER_NAME}
+      - NEXTJS_PORT=${NEXTJS_PORT}
+    profiles:
+      - development
+    networks:
+      - local_network
+
+  web-application:
+    container_name: nextjs
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      target: web-app
+    restart: on-failure
+    environment:
+      PORT: ${NEXTJS_PORT}
+      HOST: ${SERVER_NAME}
+      WATCHPACK_POLLING: true
+    ports:
+      - ${NEXTJS_PORT}:${NEXTJS_PORT}
+    volumes:
+      - ./:/web-app
+      - nextjs-node_modules:/web-app/node_modules
+    command: npm run dev
+    depends_on:
+      - nginx
+    profiles:
+      - development
+    networks:
+      - local_network
+
+volumes:
+  nextjs-node_modules:
+
+networks:
+  local_network:
