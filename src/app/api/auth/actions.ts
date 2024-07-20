@@ -1,8 +1,20 @@
 'use server'
 import {cookies} from "next/headers";
 
-export async function authorize() {
-  const hasAutoLogin = Boolean(cookies().get('X-Start-Autologin')?.value)
+/**
+ * Серверная функция для авторизации пользователя.
+ * @function authorize
+ * @returns {Promise<void>}
+ *
+ * @description
+ *
+ *  - Устанавливает куки `access_token` для основного домена (`.refresh-example.com`)
+ *  с временем жизни 1 час.
+ *  - Устанавливает куки `refresh_token` для домена `id.refresh-example.com`
+ *  с временем жизни 24 часа, если куки `X-Start-Autologin` не найдена.
+ */
+export async function authorize(): Promise<void> {
+  const hasAutoLogin = Boolean(cookies().get('X-Start-Autologin')?.value);
   const now = Date.now();
 
   cookies().set('access_token', `${now}`, {
@@ -23,5 +35,5 @@ export async function authorize() {
     })
   }
 
-  return
+  return;
 }
