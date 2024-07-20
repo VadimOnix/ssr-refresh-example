@@ -1,94 +1,40 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import styles from "@/assets/css/page.module.css";
+import {Link} from "@nextui-org/react";
+import {Divider} from "@nextui-org/divider";
+import CardUser from "@/shared/components/CardUser";
+import {Code} from "@nextui-org/code";
+import {cookies} from "next/headers";
+import {ToAboutButton, ToContactsButton} from "@/app/routeComponents";
 
 export default function Home() {
+  const accessToken = cookies().get('access_token')?.value;
+
   return (
     <main className={styles.main}>
       <div className={styles.description}>
+        <h1 className={"font-black text-xl"}>
+          Страница приложения в директории <Code size="md" color="secondary">/app</Code>
+        </h1>
+      </div>
+      <Divider className="my-4"/>
+
+      <div>
+        <CardUser token={accessToken}/>
+      </div>
+
+      <div>
         <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
+          Перейти в сервис авторизации
+          {' '}
+          <Link href="https://id.refresh-example.com"><code>id.refresh-example.com</code></Link>
         </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
       </div>
+      <Divider className="my-4"/>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+      <h2>Маршруты для проверки</h2>
+      <div className={"flex flex-col gap-8"}>
+        <ToAboutButton/>
+        <ToContactsButton/>
       </div>
     </main>
   );
