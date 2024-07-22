@@ -2,6 +2,7 @@ import type {Metadata} from "next";
 import {Inter} from "next/font/google";
 import "@/assets/css/globals.css";
 import {Providers} from "@/app/providers";
+import VisibleRefresher from "@/shared/components/VisibleRefresher";
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -15,9 +16,11 @@ export default function RootLayout({
                                    }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en" className='dark'>
     <body className={inter.className}>
+    <VisibleRefresher/>
     <Providers>
       {children}
     </Providers>
